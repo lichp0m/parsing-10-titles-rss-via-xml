@@ -1,11 +1,9 @@
 <?php
 
-include 'rss.xml';
+$rss = file_get_contents("https://spryt.ru/feed/"); // Получаю rss-код
+$cleanedRss = stristr($rss, "<?"); // Вычистил код ошибки из полученной переменной
+$xml = simplexml_load_string($cleanedRss, 'SimpleXMLElement',LIBXML_NOCDATA);
 
-$url = "https://spryt.ru/feed/";
-$rss = file_get_contents($url);
-file_put_contents('rss.xml', $rss);
-$xml = simplexml_load_file(rss.xml);
-foreach ($xml->channel->title as $title) {
-    echo $title;
+foreach ($xml->channel->item as $item) {
+    echo $item->title . "\n";
 }
